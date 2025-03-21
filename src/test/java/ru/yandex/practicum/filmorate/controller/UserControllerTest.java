@@ -1,0 +1,158 @@
+package ru.yandex.practicum.filmorate.controller;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
+import ru.yandex.practicum.filmorate.model.User;
+
+import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+class UserControllerTest {
+    UserController userController;
+    User user1;
+    User user2;
+
+    @BeforeEach
+    public void beforeEach() {
+        userController = new UserController();
+    }
+
+    @Test
+    void shouldCreateUserTest() {
+        user1 = User.builder()
+                .name("User name")
+                .email("test@email.ru")
+                .birthday(LocalDate.parse("2002-04-04"))
+                .login("login")
+                .build();
+        userController.create(user1);
+        assertEquals(1, userController.getAllUsers().size());
+    }
+
+    @Test
+    void shouldBeErrorWithWrongEmailTest() {
+        user1 = User.builder()
+                .name("User name")
+                .email("testemail.ru")
+                .birthday(LocalDate.parse("2002-04-04"))
+                .login("login")
+                .build();
+        assertThrows(ValidationException.class, () -> {
+            userController.create(user1);
+        });
+        user2 = User.builder()
+                .name("User name 2")
+                .birthday(LocalDate.parse("2002-04-04"))
+                .login("login")
+                .build();
+        assertThrows(ValidationException.class, () -> {
+            userController.create(user2);
+        });
+    }
+
+    @Test
+    void shouldBeErrorWithWrongLoginTest() {
+        user1 = User.builder()
+                .name("User name")
+                .email("test@email.ru")
+                .birthday(LocalDate.parse("2002-04-04"))
+                .login("log in")
+                .build();
+        assertThrows(ValidationException.class, () -> {
+            userController.create(user1);
+        });
+        user2 = User.builder()
+                .name("User name 2")
+                .email("test@email.ru")
+                .birthday(LocalDate.parse("2002-04-04"))
+                .build();
+        assertThrows(ValidationException.class, () -> {
+            userController.create(user2);
+        });
+    }
+
+    @Test
+    void shouldCreateUserWihtoutNameTest() {
+        user1 = User.builder()
+                .email("test@email.ru")
+                .birthday(LocalDate.parse("2002-04-04"))
+                .login("login")
+                .build();
+        userController.create(user1);
+        assertEquals("login", userController.getAllUsers().stream().toList().get(0).getName());
+    }
+
+    @Test
+    void shouldBeErrorWithBirthdayInFutureTest() {
+        user1 = User.builder()
+                .name("User name")
+                .email("test@email.ru")
+                .birthday(LocalDate.parse("2032-04-04"))
+                .login("log in")
+                .build();
+        assertThrows(ValidationException.class, () -> {
+            userController.create(user1);
+        });
+    }
+
+    @Test
+    void shouldBeErrorWithUpdateUserWithoutIdTest() {
+        user1 = User.builder()
+                .name("User name")
+                .email("test@email.ru")
+                .birthday(LocalDate.parse("2002-04-04"))
+                .login("login")
+                .build();
+        userController.create(user1);
+        user2 = User.builder()
+                .name("User name 2")
+                .email("test@email.ru")
+                .birthday(LocalDate.parse("2002-04-04"))
+                .build();
+        assertThrows(ValidationException.class, () -> {
+            userController.update(user2);
+        });
+    }
+
+    @Test
+    void shouldBeUpdateUserTest() {
+        user1 = User.builder()
+                .name("User name")
+                .email("test@email.ru")
+                .birthday(LocalDate.parse("2002-04-04"))
+                .login("login")
+                .build();
+        userController.create(user1);
+        user2 = User.builder()
+                .id(1L)
+                .name("User name 2")
+                .email("test@email.ru")
+                .birthday(LocalDate.parse("2002-04-04"))
+                .login("login")
+                .build();
+        userController.update(user2);
+        assertEquals("User name 2", userController.getAllUsers().stream().toList().get(0).getName());
+    }
+
+    @Test
+    void shouldReturnAllUsersTest() {
+        user1 = User.builder()
+                .name("User name")
+                .email("test@email.ru")
+                .birthday(LocalDate.parse("2002-04-04"))
+                .login("login")
+                .build();
+        userController.create(user1);
+        user2 = User.builder()
+                .name("User name 2")
+                .email("test@email.ru")
+                .birthday(LocalDate.parse("2002-04-04"))
+                .login("login")
+                .build();
+        userController.create(user2);
+        assertEquals(2, userController.getAllUsers().size());
+    }
+}

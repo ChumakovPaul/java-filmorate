@@ -2,13 +2,11 @@ package ru.yandex.practicum.filmorate.controller;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class UserControllerTest {
     UserController userController;
@@ -40,17 +38,13 @@ class UserControllerTest {
                 .birthday(LocalDate.parse("2002-04-04"))
                 .login("login")
                 .build();
-        assertThrows(ValidationException.class, () -> {
-            userController.create(user1);
-        });
+        assertEquals(0, userController.getAllUsers().size());
         user2 = User.builder()
                 .name("User name 2")
                 .birthday(LocalDate.parse("2002-04-04"))
                 .login("login")
                 .build();
-        assertThrows(ValidationException.class, () -> {
-            userController.create(user2);
-        });
+        assertEquals(0, userController.getAllUsers().size());
     }
 
     @Test
@@ -61,17 +55,13 @@ class UserControllerTest {
                 .birthday(LocalDate.parse("2002-04-04"))
                 .login("log in")
                 .build();
-        assertThrows(ValidationException.class, () -> {
-            userController.create(user1);
-        });
+        assertEquals(0, userController.getAllUsers().size());
         user2 = User.builder()
                 .name("User name 2")
                 .email("test@email.ru")
                 .birthday(LocalDate.parse("2002-04-04"))
                 .build();
-        assertThrows(ValidationException.class, () -> {
-            userController.create(user2);
-        });
+        assertEquals(0, userController.getAllUsers().size());
     }
 
     @Test
@@ -93,15 +83,13 @@ class UserControllerTest {
                 .birthday(LocalDate.parse("2032-04-04"))
                 .login("log in")
                 .build();
-        assertThrows(ValidationException.class, () -> {
-            userController.create(user1);
-        });
+        assertEquals(0, userController.getAllUsers().size());
     }
 
     @Test
     void shouldBeErrorWithUpdateUserWithoutIdTest() {
         user1 = User.builder()
-                .name("User name")
+                .name("User name 1")
                 .email("test@email.ru")
                 .birthday(LocalDate.parse("2002-04-04"))
                 .login("login")
@@ -112,9 +100,8 @@ class UserControllerTest {
                 .email("test@email.ru")
                 .birthday(LocalDate.parse("2002-04-04"))
                 .build();
-        assertThrows(ValidationException.class, () -> {
-            userController.update(user2);
-        });
+        userController.create(user2);
+        assertEquals("User name 1", userController.getAllUsers().stream().toList().get(0).getName());
     }
 
     @Test

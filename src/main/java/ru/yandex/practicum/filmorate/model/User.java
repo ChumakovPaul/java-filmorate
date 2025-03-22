@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.Builder;
 import lombok.Data;
+import ru.yandex.practicum.filmorate.annotation.MustBeWithoutWhitespace;
 
 import java.time.LocalDate;
 
@@ -17,6 +18,7 @@ public class User {
     @Email(message = "Электронная почта не может быть пустой и должна содержать символ @")
     private String email;
 
+    @MustBeWithoutWhitespace(message = "Логин не может быть с пробелами")
     @NotBlank(message = "Логин не может быть пустым")
     private String login;
 

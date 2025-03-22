@@ -11,8 +11,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Constraint(validatedBy = MustBeWithoutWhitespaceValidator.class)
 
-public @interface  MustBeWithoutWhitespace {
-    String message() ;
+public @interface MustBeWithoutWhitespace {
+    String message();
     Class<?>[] groups() default {};
     Class<?>[] payload() default {};
 }

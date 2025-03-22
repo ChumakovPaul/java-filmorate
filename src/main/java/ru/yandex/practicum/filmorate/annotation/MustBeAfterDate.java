@@ -15,5 +15,5 @@ public @interface MustBeAfterDate {
     String message();
     Class<?>[] groups() default {};
     Class<?>[] payload() default {};
-    String value() ;
+    String value();
 }

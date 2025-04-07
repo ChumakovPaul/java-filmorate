@@ -3,9 +3,7 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exception.ModelNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.util.Collection;
@@ -36,12 +34,6 @@ public class UserService {
     }
 
     public void addFriend(Long id, Long friendId) {
-//        if (userStorage.getUserByID(id).getFriends() == null) {
-//            getUserById(id).setFreinds(new HashSet<>());
-//        }
-//        if (userStorage.getUserByID(friendId).getFriends() == null) {
-//            getUserById(friendId).setFreinds(new HashSet<>());
-//        }
         log.info("Добавляются в друзья пользователи id={} и id={} ", id, friendId);
         userStorage.getUserByID(id).getFriends().add(friendId);
         userStorage.getUserByID(friendId).getFriends().add(id);
@@ -57,15 +49,12 @@ public class UserService {
     }
 
     public void deleteFriend(Long id, Long friendId) {
-//        if (userStorage.getUserByID(id) == null || userStorage.getUserByID(friendId) == null) {
-//            throw new ModelNotFoundException("У Id = " + id + "нет друга с Id = " + friendId);
-//        }
         log.info("Удаление из друзей пользователй id={} и id={}", id, friendId);
         userStorage.getUserByID(id).getFriends().remove(friendId);
         userStorage.getUserByID(friendId).getFriends().remove(id);
     }
 
-    public Set<User>  getCommonFriends(Long id, Long otherId) {
+    public Set<User> getCommonFriends(Long id, Long otherId) {
         log.info("Получаем список общих друзей пользователей id={} и id={}", id, otherId);
         return getFriends(id).stream()
                 .filter(getFriends(otherId)::contains)

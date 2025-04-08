@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
@@ -18,10 +19,16 @@ public class UserService {
     private final UserStorage userStorage;
 
     public User create(User user) {
+        userNameValidation(user);
         return userStorage.create(user);
     }
 
     public User update(User newUser) {
+        if (newUser.getId() == null) {
+            log.error("Id должен быть указан");
+            throw new ValidationException("Id должен быть указан");
+        }
+        userNameValidation(newUser);
         return userStorage.update(newUser);
     }
 
@@ -30,6 +37,9 @@ public class UserService {
     }
 
     public User getUserById(Long id) {
+        if (id <= 0) {
+            throw new ValidationException("Id пользователя должен быть положительным");
+        }
         return userStorage.getUserByID(id);
     }
 
@@ -59,5 +69,12 @@ public class UserService {
         return getFriends(id).stream()
                 .filter(getFriends(otherId)::contains)
                 .collect(Collectors.toSet());
+    }
+
+    private void userNameValidation(User user) {
+        log.info("Валидация имени нового пользователя");
+        if (user.getName() == null) {
+            user.setName(user.getLogin());
+        }
     }
 }

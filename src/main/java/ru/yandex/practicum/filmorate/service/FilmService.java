@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.ModelNotFoundException;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
@@ -23,6 +24,10 @@ public class FilmService {
     }
 
     public Film update(Film newFilm) {
+        if (newFilm.getId() == null) {
+            log.error("Id должен быть указан");
+            throw new ValidationException("Id должен быть указан");
+        }
         return filmStorage.update(newFilm);
     }
 
@@ -31,6 +36,9 @@ public class FilmService {
     }
 
     public Film getFilmById(Long id) {
+        if (id <= 0) {
+            throw new ValidationException("Id фильма должен быть положительным");
+        }
         log.info("Запрос информации о фильме id={}", id);
         return filmStorage.getFilmByID(id);
     }

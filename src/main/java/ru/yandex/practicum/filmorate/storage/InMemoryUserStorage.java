@@ -3,7 +3,6 @@ package ru.yandex.practicum.filmorate.storage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.ModelNotFoundException;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.Collection;
@@ -20,7 +19,6 @@ public class InMemoryUserStorage implements UserStorage {
     @Override
     public User create(User user) {
         log.info("Cоздаем нового пользователя: {}", user);
-        userNameValidation(user);
         user.setId(getNextId());
         user.setFriends(new HashSet<Long>());
         users.put(user.getId(), user);
@@ -31,12 +29,7 @@ public class InMemoryUserStorage implements UserStorage {
     @Override
     public User update(User newUser) {
         log.info("Обновляем пользователя: {}", newUser);
-        if (newUser.getId() == null) {
-            log.error("Id должен быть указан");
-            throw new ValidationException("Id должен быть указан");
-        }
         if (users.containsKey(newUser.getId())) {
-            userNameValidation(newUser);
             users.put(newUser.getId(), newUser);
             log.info("Пользователь обновлен: {}", newUser);
             return newUser;
@@ -54,9 +47,6 @@ public class InMemoryUserStorage implements UserStorage {
     @Override
     public User getUserByID(Long id) {
         log.info("Запрос информации о пользователе id={}", id);
-        if (id <= 0) {
-            throw new ValidationException("Id пользователя должен быть положительным");
-        }
         if (users.get(id) == null) {
             throw new ModelNotFoundException("Пользователь c Id = " + id + " не найден");
         }
@@ -70,12 +60,5 @@ public class InMemoryUserStorage implements UserStorage {
                 .max()
                 .orElse(0);
         return ++currentMaxId;
-    }
-
-    private void userNameValidation(User user) {
-        log.info("Валидация имени нового пользователя");
-        if (user.getName() == null) {
-            user.setName(user.getLogin());
-        }
     }
 }

@@ -8,6 +8,7 @@ import lombok.Data;
 import ru.yandex.practicum.filmorate.annotation.MustBeWithoutWhitespace;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Builder
 @Data
@@ -26,4 +27,6 @@ public class User {
 
     @PastOrPresent(message = "Дата рождения не может быть в будущем")
     private LocalDate birthday;
+
+    private Set<Long> friends;
 }

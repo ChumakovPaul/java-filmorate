@@ -62,7 +62,7 @@ public class UserController {
 
     @DeleteMapping("/{id}/friends/{friendId}")
     public void deleteFriend(@PathVariable Long id, @PathVariable Long friendId) {
-        log.info("\nУдаление пользователя id={} из списка друзей пользователя id={}", friendId,id) ;
+        log.info("\nУдаление пользователя id={} из списка друзей пользователя id={}", friendId, id);
         userService.deleteFriend(id, friendId);
     }
 

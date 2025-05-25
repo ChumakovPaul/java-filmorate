@@ -26,7 +26,7 @@ public class GenreDbApplicationTests {
     private final GenreDbStorage genreStorage;
 
     @Test
-    public void FindAllGenresTest() {
+    public void findAllGenresTest() {
         Collection<Genre> genres = genreStorage.getAll();
         assertThat(genres).isNotNull();
         assertThat(genres.size()).isEqualTo(6);

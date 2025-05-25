@@ -59,8 +59,8 @@ public class FilmDbApplicationTests {
         user1.setBirthday(LocalDate.of(1990, 1, 1));
         user1 = userStorage.create(user1);
         Mpa mpa = mpaStorage.findById(1L).get();
-        filmRequest = new FilmRequest("Film1", "Description1"
-                , LocalDate.of(2000, 01, 01), 90, mpa);
+        filmRequest = new FilmRequest("Film1", "Description1",
+                LocalDate.of(2000, 01, 01), 90, mpa);
         film1 = filmStorage.create(filmRequest);
         filmGenreStorage.addFilmGenres(film1.getId(), List.of(1L, 2L));
         filmStorage.addLike(film1.getId(), user1.getId());
@@ -88,7 +88,7 @@ public class FilmDbApplicationTests {
     }
 
     @Test
-    public void DeleteFilmTest() {
+    public void deleteFilmTest() {
         assertThat(film1.getId()).isNotNull();
         filmStorage.deleteFilm(film1.getId());
         assertThat(filmStorage.getFilmByID(film1.getId())).isEmpty();

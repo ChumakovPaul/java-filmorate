@@ -45,7 +45,7 @@ public class FilmGenreDbStorage extends BaseRepository<FilmGenre> implements Gen
     }
 
     @Override
-    public void deleteFilmGenres (Long id) {
+    public void deleteFilmGenres(Long id) {
         delete(DELETE_FILMS_GENRES_QUERY, id);
     }
 }

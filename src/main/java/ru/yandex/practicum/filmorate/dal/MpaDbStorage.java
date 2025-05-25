@@ -15,7 +15,7 @@ public class MpaDbStorage extends BaseRepository<Mpa> implements MpaStorage {
 
     private static final String CREATE_MPA_QUERY = "INSERT INTO mpa(name) VALUES (?)";
     private static final String MODIFY_MPA_QUERY = "UPDATE mpa SET name = ? WHERE mpa_id = ?";
-        private static final String DELETE_RATING_QUERY = "DELETE FROM mpa WHERE mpa_id = ?";
+    private static final String DELETE_RATING_QUERY = "DELETE FROM mpa WHERE mpa_id = ?";
     private static final String GET_ALL_QUERY = "SELECT * FROM mpa";
     private static final String FIND_BY_ID_QUERY = "SELECT * FROM mpa WHERE mpa_id = ?";
     private static final String FIND_BY_NAME_QUERY = "SELECT * FROM mpa WHERE name = ?";

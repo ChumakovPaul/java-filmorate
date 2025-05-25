@@ -40,12 +40,12 @@ public class FilmService {
     @Autowired
     public FilmService(@Qualifier("filmDbStorage") FilmStorage filmStorage,
                        @Qualifier("userDbStorage") UserStorage userStorage,
-                       @Qualifier("ratingDbStorage") MpaDbStorage MpaDbStorage,
+                       @Qualifier("mpaDbStorage") MpaDbStorage mpaDbStorage,
                        GenreDbStorage genreStorage, FilmGenreDbStorage filmGenreDbStorage) {
         this.filmStorage = filmStorage;
         this.userStorage = userStorage;
         this.genreStorage = genreStorage;
-        this.mpaDbStorage = MpaDbStorage;
+        this.mpaDbStorage = mpaDbStorage;
         this.filmGenreDbStorage = filmGenreDbStorage;
     }
 

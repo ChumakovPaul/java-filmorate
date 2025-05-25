@@ -10,7 +10,7 @@ import ru.yandex.practicum.filmorate.storage.MpaStorage;
 import java.util.List;
 import java.util.Optional;
 
-@Component("ratingDbStorage")
+@Component("mpaDbStorage")
 public class MpaDbStorage extends BaseRepository<Mpa> implements MpaStorage {
 
     private static final String CREATE_MPA_QUERY = "INSERT INTO mpa(name) VALUES (?)";

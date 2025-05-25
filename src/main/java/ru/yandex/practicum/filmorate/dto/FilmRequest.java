@@ -1,25 +1,22 @@
-package ru.yandex.practicum.filmorate.model;
+package ru.yandex.practicum.filmorate.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.yandex.practicum.filmorate.annotation.MustBeAfterDate;
+import ru.yandex.practicum.filmorate.model.Genre;
+import ru.yandex.practicum.filmorate.model.Mpa;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
-@Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Film {
+public class FilmRequest {
+
+    @Positive(message = "Id фильма должен быть положительным числом")
     private Long id;
 
     @NotNull(message = "Название фильма не может быть пустым.")
@@ -33,10 +30,18 @@ public class Film {
     private LocalDate releaseDate;
 
     @Min(value = 1, message = "Продолжительность фильма должна быть положительным числом.")
-    private int duration;
+    private int duration; //пока предполагаем продолжительность в минутах
 
-    private long mpa;
+    @NotNull(message = "Рейтинг должен быть указан")
+    private Mpa mpa;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Set<Long> likes = new HashSet<>();
+    private List<Genre> genres;
+
+    public FilmRequest(String name, String description, LocalDate releaseDate, Integer duration, Mpa mpa) {
+        this.name = name;
+        this.description = description;
+        this.releaseDate = releaseDate;
+        this.duration = duration;
+        this.mpa = mpa;
+    }
 }
